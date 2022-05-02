@@ -1,5 +1,4 @@
 import {
-  Alert,
   CardContent,
   Container,
   Divider,
@@ -10,18 +9,20 @@ import {
 import { Box } from "@mui/system";
 import { format } from "date-fns";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 
-import { Controller, useForm } from "react-hook-form";
 import { ButtonForm } from "./components/buttons/ButtonForm";
 import { FormCheck } from "./components/forms/FormCheck";
 import { FormDate } from "./components/forms/FormDate";
 import { FormSelect } from "./components/forms/FormSelect";
 import { FormText } from "./components/forms/FormText";
+import CustomDialog from "./components/others/CustomDialog";
 
 export const Form = ({data}) => {
   const { marginTop, bgcolor, height, width, borderRadius, boxShadow } = data;
   const [loading, setLoading] = useState(false);
-  const [alert, setAlert] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [dataForm,setDataForm] = useState({});
 
   const {
     handleSubmit,
@@ -50,21 +51,20 @@ export const Form = ({data}) => {
   ];
 
   const onSubmit = (data) => {
-    if (errors) {
-      setAlert(true);
-    }
     setLoading(true);
     data.date = format(data.date, "dd/MM/yyyy");
     console.log(data.date);
     console.log(data);
+    setDataForm(data)
+    //simulando una espera
     if (!loading) {
       const timer = setTimeout(() => {
         setLoading(false);
+        setOpen(true);
       }, 2000);
       return () => clearTimeout(timer);
     }
   };
-
   return (
     <>
       <Container
@@ -167,27 +167,26 @@ export const Form = ({data}) => {
                     register={register}
                     name="date"
                     rulesBol={true}
-                    variant="filled"
+                    color="#212121"
                     labelText="Fecha de Nacimiento"
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <ButtonForm
+                <ButtonForm
                     size="small"
                     variant="contained"
                     type="submit"
                     loading={loading}
                     text="Enviar"
                     color="#212121"
+                    onClick ={()=>setOpen(true)}
                   />
                 </Grid>
               </Grid>
-              {alert && (
-                <Alert severity="error">Faltan campos que llenar </Alert>
-              )}
             </form>
             </FormControl>
           </CardContent>
+          <CustomDialog openDialog={open}  data={dataForm}/>
         </Box>
       </Container>
     </>

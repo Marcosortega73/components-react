@@ -14,9 +14,33 @@ export const FormSelect = ({
   opcion,
   color
 }) => {
-
+ /*TODO: 
+            # Pasar atributos de estilos por props
+    */
     const BootstrapInput = styled(TextField)(({ theme }) => ({
         
+   
+
+            '.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root':{
+
+              color:"#ced4da"
+
+            },
+            '.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused':{
+
+              display:"inline",
+              color: color,
+              borderRadius: "7px",
+              backgroundColor:  errors[name] ? "red":"#78909c",
+              padding: "0px 5px",
+            },
+            '.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root':{
+
+              display:"none",
+            },
+            '.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root':{
+              width:'235.2px'
+            },
         'label + &': {
           marginTop: theme.spacing(8),
           color:"red"
@@ -55,6 +79,7 @@ export const FormSelect = ({
             color:"#cca500"
           },
         },
+        
       }));
   return (
     <>
