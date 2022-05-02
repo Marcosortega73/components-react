@@ -1,28 +1,96 @@
+//CustomDialog
+
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
+import Typography from '@mui/material/Typography';
+import { Divider } from '@mui/material';
+
+
+
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
+
+
+export default function CustomDialog({openDialog, data}) {
+    const {username,password,select,checkbox,date}= data;
+
+console.log("que onda ", openDialog)
+  return (
+    <div>
+      <BootstrapDialog
+     
+        aria-labelledby="customized-dialog-title"
+        open={openDialog}
+      >
+          <DialogTitle sx={{marginBottom:"5px"}}>Datos Ingresados: </DialogTitle>
+          <Divider />
+        <DialogContent dividers>
+          <Typography gutterBottom>
+         <span>Username: </span> <em>{username}</em>
+          </Typography>
+          <Typography gutterBottom>
+          <span>Password: </span> <em>{password}</em>
+          </Typography>
+          <Typography gutterBottom>
+          <span>Nacionalidad: </span> <em>{select}</em>
+          </Typography>
+          <Typography gutterBottom>
+          <span>Fecha de Nacimiento: </span> <em>{date}</em>
+          </Typography> 
+          <Typography gutterBottom>
+          <span>Terminos aceptado: </span> <em>{checkbox?"Si":"No"}</em>
+          </Typography> 
+        </DialogContent>
+      </BootstrapDialog>
+    </div>
+  );
+}
+
+
+// form
+
+
 import {
+  Alert,
   CardContent,
+  Checkbox,
   Container,
   Divider,
-  FormControl,
+  FormControlLabel,
   Grid,
   Typography,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import { format } from "date-fns";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 
+import { Controller, useForm } from "react-hook-form";
 import { ButtonForm } from "./components/buttons/ButtonForm";
+import CustomDialog from "./components/dialogs/CustomDialog";
 import { FormCheck } from "./components/forms/FormCheck";
 import { FormDate } from "./components/forms/FormDate";
 import { FormSelect } from "./components/forms/FormSelect";
 import { FormText } from "./components/forms/FormText";
-import CustomDialog from "./components/others/CustomDialog";
 
-export const Form = ({data}) => {
-  const { marginTop, bgcolor, height, width, borderRadius, boxShadow } = data;
+export const Form = () => {
   const [loading, setLoading] = useState(false);
+  const [alert, setAlert] = useState(false);
   const [open, setOpen] = useState(false);
   const [dataForm,setDataForm] = useState({});
+  
 
   const {
     handleSubmit,
@@ -65,6 +133,7 @@ export const Form = ({data}) => {
       return () => clearTimeout(timer);
     }
   };
+
   return (
     <>
       <Container
@@ -74,27 +143,26 @@ export const Form = ({data}) => {
           justifyContent: "center",
         }}
       >
-        <Box
-          elevation={4}
-          sx={{
-            marginTop: marginTop,
-            bgcolor: bgcolor,
-            height: height,
-            width: width,
-            borderRadius: borderRadius,
-            boxShadow: boxShadow,
-          }}
-        >
+        <Box 
+        elevation={4}
+        sx={{ 
+        marginTop:'50px',
+        bgcolor: "#cca500", 
+        height: "100%", 
+        width: "50%",
+        borderRadius:"15px",
+        boxShadow:"1px 2px 5px 3px rgba(0,0,0,0.75)"
+        }}>
           <Typography
-            sx={{ fontSize: 17, paddingTop: "5px" }}
-            color="black"
-            gutterBottom
-          >
-            Ingrese sus datos
-          </Typography>
-          <Divider />
+              sx={{ fontSize: 17,paddingTop:"5px" }}
+              color="black"
+              gutterBottom
+            >
+              Ingrese sus datos
+            </Typography>
+            <Divider />
           <CardContent>
-            <FormControl>
+            
             <form onSubmit={handleSubmit(onSubmit)}>
               <Grid
                 container
@@ -133,10 +201,9 @@ export const Form = ({data}) => {
                     register={register}
                     name="select"
                     rulesBol={true}
-                    variant="outlined"
-                    labelText="Nacionalidad"
+                    variant="filled"
+                    labelText="Seleccione su Nacionalidad"
                     opcion={paisesSelect}
-                    color="#212121"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -167,12 +234,12 @@ export const Form = ({data}) => {
                     register={register}
                     name="date"
                     rulesBol={true}
-                    color="#212121"
+                    variant="filled"
                     labelText="Fecha de Nacimiento"
                   />
                 </Grid>
                 <Grid item xs={12}>
-                <ButtonForm
+                  <ButtonForm
                     size="small"
                     variant="contained"
                     type="submit"
@@ -183,8 +250,10 @@ export const Form = ({data}) => {
                   />
                 </Grid>
               </Grid>
+              {alert && (
+                <Alert severity="error">Faltan campos que llenar </Alert>
+              )}
             </form>
-            </FormControl>
           </CardContent>
           <CustomDialog openDialog={open}  data={dataForm}/>
         </Box>
