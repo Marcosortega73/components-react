@@ -1,6 +1,7 @@
-import { MenuItem, Select, TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
 import React from "react";
 import { Controller } from "react-hook-form";
+import { alpha, styled } from '@mui/material/styles';
 
 export const FormSelect = ({
   control,
@@ -10,8 +11,51 @@ export const FormSelect = ({
   rulesBol,
   variant,
   labelText,
-  opcion
+  opcion,
+  color
 }) => {
+
+    const BootstrapInput = styled(TextField)(({ theme }) => ({
+        
+        'label + &': {
+          marginTop: theme.spacing(8),
+          color:"red"
+        },
+
+        '& .MuiInputBase-input': {
+          borderRadius: 4,
+          position: 'relative',
+          backgroundColor: theme.palette.mode === 'dark' ? {color} : '#2b2b2b',
+          border: '1px solid #ced4da',
+          fontSize: 16,
+          width: '100%',
+          color:'#ced4da',
+          padding: '10px 12px',
+          transition: theme.transitions.create([
+            'border-color',
+            'background-color',
+            'box-shadow',
+          ]),
+          // Use the system font instead of the default Roboto font.
+          fontFamily: [
+            '-apple-system',
+            'BlinkMacSystemFont',
+            '"Segoe UI"',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif',
+            '"Apple Color Emoji"',
+            '"Segoe UI Emoji"',
+            '"Segoe UI Symbol"',
+          ].join(','),
+          '&:focus': {
+            boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
+            borderColor: "#607d8b",
+            color:"#cca500"
+          },
+        },
+      }));
   return (
     <>
       <Controller
@@ -19,16 +63,15 @@ export const FormSelect = ({
         control={control}
         rules={{ required: rulesBol }}
         render={({ field }) => (
-          <TextField
+          <BootstrapInput
             {...field}
             {...register(name)}
             variant={variant}
             label={labelText}
             select
             defaultValue=""
-            size="medium"
             sx={{
-                width: 200,
+                width: 226,
                 maxWidth: '100%',
               }}
             error={!!errors[name]}
@@ -42,7 +85,7 @@ export const FormSelect = ({
             
             )}
            
-          </TextField>
+          </BootstrapInput>
         )}
       />
     </>

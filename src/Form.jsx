@@ -1,10 +1,9 @@
 import {
   Alert,
   CardContent,
-  Checkbox,
   Container,
   Divider,
-  FormControlLabel,
+  FormControl,
   Grid,
   Typography,
 } from "@mui/material";
@@ -19,7 +18,8 @@ import { FormDate } from "./components/forms/FormDate";
 import { FormSelect } from "./components/forms/FormSelect";
 import { FormText } from "./components/forms/FormText";
 
-export const Form = () => {
+export const Form = ({data}) => {
+  const { marginTop, bgcolor, height, width, borderRadius, boxShadow } = data;
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(false);
 
@@ -74,26 +74,27 @@ export const Form = () => {
           justifyContent: "center",
         }}
       >
-        <Box 
-        elevation={4}
-        sx={{ 
-        marginTop:'50px',
-        bgcolor: "#cca500", 
-        height: "100%", 
-        width: "50%",
-        borderRadius:"15px",
-        boxShadow:"1px 2px 5px 3px rgba(0,0,0,0.75)"
-        }}>
+        <Box
+          elevation={4}
+          sx={{
+            marginTop: marginTop,
+            bgcolor: bgcolor,
+            height: height,
+            width: width,
+            borderRadius: borderRadius,
+            boxShadow: boxShadow,
+          }}
+        >
           <Typography
-              sx={{ fontSize: 17,paddingTop:"5px" }}
-              color="black"
-              gutterBottom
-            >
-              Ingrese sus datos
-            </Typography>
-            <Divider />
+            sx={{ fontSize: 17, paddingTop: "5px" }}
+            color="black"
+            gutterBottom
+          >
+            Ingrese sus datos
+          </Typography>
+          <Divider />
           <CardContent>
-            
+            <FormControl>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Grid
                 container
@@ -132,9 +133,10 @@ export const Form = () => {
                     register={register}
                     name="select"
                     rulesBol={true}
-                    variant="filled"
-                    labelText="Seleccione su Nacionalidad"
+                    variant="outlined"
+                    labelText="Nacionalidad"
                     opcion={paisesSelect}
+                    color="#212121"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -184,6 +186,7 @@ export const Form = () => {
                 <Alert severity="error">Faltan campos que llenar </Alert>
               )}
             </form>
+            </FormControl>
           </CardContent>
         </Box>
       </Container>
